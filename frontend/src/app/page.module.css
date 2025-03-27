@@ -1,6 +1,12 @@
+html, body {
+  overflow: auto;
+  height: 100%;
+}
+
 .main {
   min-height: 100vh;
   background: #FFFFFF;
+  height: auto;
 }
 
 .container {
