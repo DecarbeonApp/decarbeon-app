@@ -7,18 +7,19 @@
 }
 
 .loginCard {
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   padding: 48px;
   width: 420px;
   position: relative;
   transition: all 0.3s ease;
+  backdrop-filter: blur(8px);
 }
 
 .loginCard:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 12px -1px rgba(0, 0, 0, 0.1), 0 4px 6px -1px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.12);
 }
 
 .logo {
@@ -33,18 +34,19 @@
 }
 
 .title {
-  font-size: 24px;
-  font-weight: 500;
-  color: #1a1a1a;
-  margin-bottom: 6px;
+  font-size: 28px;
+  font-weight: 600;
+  color: #1B4332;
+  margin-bottom: 8px;
   transition: all 0.3s ease;
 }
 
 .subtitle {
-  font-size: 14px;
-  color: #666;
+  font-size: 16px;
+  color: #52796F;
   margin-bottom: 32px;
   transition: all 0.3s ease;
+  line-height: 1.5;
 }
 
 .form {
@@ -63,39 +65,39 @@
 
 .input {
   width: 100%;
-  height: 48px;
+  height: 52px;
   padding: 0 16px;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
+  border: 2px solid #E6E8E6;
+  border-radius: 12px;
   outline: none;
   font-size: 16px;
-  color: #1a1a1a;
+  color: #1B4332;
   transition: all 0.2s ease;
   background: white;
 }
 
 .input:hover {
-  border-color: #2563eb80;
+  border-color: #52796F;
 }
 
 .input:focus {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+  border-color: #2D6A4F;
+  box-shadow: 0 0 0 4px rgba(45, 106, 79, 0.1);
 }
 
 .input.error {
-  border-color: #ef4444;
+  border-color: #E63946;
 }
 
 .input.error:focus {
-  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+  box-shadow: 0 0 0 4px rgba(230, 57, 70, 0.1);
 }
 
 .errorMessage {
   position: absolute;
   bottom: -20px;
   left: 0;
-  color: #ef4444;
+  color: #E63946;
   font-size: 12px;
   opacity: 0;
   transform: translateY(-5px);
@@ -112,7 +114,7 @@
   left: 16px;
   top: 50%;
   transform: translateY(-50%);
-  color: #666;
+  color: #52796F;
   transition: all 0.2s ease;
   pointer-events: none;
   font-size: 16px;
@@ -123,22 +125,22 @@
 .input:focus ~ .label,
 .input:not(:placeholder-shown) ~ .label {
   top: 0;
-  transform: translateY(-50%) scale(0.8);
-  color: #2563eb;
+  transform: translateY(-50%) scale(0.85);
+  color: #2D6A4F;
 }
 
 .input.error ~ .label {
-  color: #ef4444;
+  color: #E63946;
 }
 
 .button {
-  height: 48px;
-  background-color: #2563eb;
+  height: 52px;
+  background-color: #2D6A4F;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
   margin-top: 8px;
@@ -147,7 +149,7 @@
 }
 
 .button:hover {
-  background-color: #1d4ed8;
+  background-color: #1B4332;
   transform: translateY(-1px);
 }
 
@@ -176,29 +178,30 @@
 .forgotPassword {
   display: block;
   text-align: center;
-  color: #2563eb;
+  color: #2D6A4F;
   text-decoration: none;
   font-size: 14px;
   margin: 16px 0;
   transition: all 0.2s ease;
+  font-weight: 500;
 }
 
 .forgotPassword:hover {
-  color: #1d4ed8;
+  color: #1B4332;
   transform: translateY(-1px);
 }
 
 .footer {
   text-align: center;
-  color: #666;
+  color: #52796F;
   font-size: 14px;
   margin-top: 16px;
 }
 
 .footerLink {
-  color: #2563eb;
+  color: #2D6A4F;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   border: none;
   background: none;
@@ -209,7 +212,7 @@
 }
 
 .footerLink:hover {
-  color: #1d4ed8;
+  color: #1B4332;
   transform: translateY(-1px);
 }
 
