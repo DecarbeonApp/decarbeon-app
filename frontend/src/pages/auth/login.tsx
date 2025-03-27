@@ -62,9 +62,10 @@ export default function Login() {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
     if (validateForm()) {
-      // TODO: Implement actual authentication logic here
-      console.log(isLogin ? 'Login' : 'Signup', formData);
+      // Just redirect to dashboard on login
+      router.push('/dashboard');
     }
   };
 

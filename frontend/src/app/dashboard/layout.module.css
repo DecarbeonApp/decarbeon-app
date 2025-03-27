@@ -1,0 +1,31 @@
+.layout {
+  display: flex;
+  min-height: 100vh;
+  background: #F8FAF9;
+  padding-top: 64px;
+}
+
+.main {
+  flex: 1;
+  margin-left: 72px;
+  padding: 32px;
+  transition: margin 0.3s ease;
+  min-height: 100vh;
+  overflow-y: auto;
+  background: #F8FAF9;
+}
+
+.main.shifted {
+  margin-left: 240px;
+}
+
+@media (max-width: 768px) {
+  .main {
+    margin-left: 0;
+    padding: 16px;
+  }
+
+  .main.shifted {
+    margin-left: 72px;
+  }
+}

@@ -1,0 +1,148 @@
+.container {
+  padding: 32px;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1B4332;
+  margin-bottom: 24px;
+}
+
+.dashboard {
+  padding: 24px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.card h2 {
+  margin: 0 0 16px;
+  font-size: 18px;
+  color: #1B4332;
+  flex-shrink: 0;
+}
+
+.charts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 24px;
+  margin: 0 auto;
+}
+
+.chart {
+  background: #FFFFFF;
+  border-radius: 8px;
+  padding: 16px;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart h3 {
+  font-size: 16px;
+  font-weight: 500;
+  color: #1B4332;
+  margin-bottom: 16px;
+}
+
+.chart canvas {
+  flex: 1;
+  width: 100% !important;
+  height: auto !important;
+  max-height: 300px;
+}
+
+.heatmap {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  height: 300px;
+}
+
+.heatmapCell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  border-radius: 8px;
+  color: white;
+  transition: all 0.2s ease;
+}
+
+.heatmapCell:hover {
+  transform: scale(1.05);
+}
+
+.month {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.value {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.placeholder {
+  height: calc(100% - 40px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #E9ECEF;
+  border-radius: 4px;
+  color: #52B788;
+  font-size: 14px;
+  padding: 16px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 16px;
+  }
+
+  .dashboard {
+    padding: 16px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .card {
+    padding: 16px;
+    height: 350px;
+  }
+
+  .charts {
+    grid-template-columns: 1fr;
+  }
+
+  .chart {
+    min-height: 250px;
+  }
+
+  .chart canvas {
+    max-height: 250px;
+  }
+}
