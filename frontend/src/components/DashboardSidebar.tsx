@@ -113,6 +113,19 @@ export default function DashboardSidebar({ isExpanded, onToggle }: DashboardSide
           </Link>
         </div>
 
+        <div className={styles.navGroup}>
+          <div className={styles.navLabel}>Tools</div>
+          <Link 
+            href="/calculator" 
+            className={`${styles.navItem} ${isActive('/calculator') ? styles.active : ''}`}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 3C15.866 3 19 5.134 19 8V16C19 18.866 15.866 21 12 21C8.134 21 5 18.866 5 16V8C5 5.134 8.134 3 12 3ZM12 5C14.732 5 17 7.268 17 10V14C17 16.732 14.732 19 12 19C9.268 19 7 16.732 7 14V10C7 7.268 9.268 5 12 5Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            {isExpanded && <span>Carbon Calculator</span>}
+          </Link>
+        </div>
+
         <div className={styles.separator} />
 
         <Link 
