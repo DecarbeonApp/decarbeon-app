@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import styles from './page.module.css';
+import { useEmissionsData } from '@/hooks/useEmissionsData';
 
 import {
   LineChart,
@@ -21,31 +22,11 @@ import {
   Tooltip,
   Legend,
   Cell,
-  Brush
+  Brush,
+  ComposedChart
 } from 'recharts';
 
-const monthlyData = [
-  { month: 'Jan', emissions: 4000, reduction: 2400, target: 3000, intensity: 65 },
-  { month: 'Feb', emissions: 3000, reduction: 1398, target: 2800, intensity: 59 },
-  { month: 'Mar', emissions: 2000, reduction: 9800, target: 2600, intensity: 80 },
-  { month: 'Apr', emissions: 2780, reduction: 3908, target: 2400, intensity: 81 },
-  { month: 'May', emissions: 1890, reduction: 4800, target: 2200, intensity: 56 },
-  { month: 'Jun', emissions: 2390, reduction: 3800, target: 2000, intensity: 55 },
-  { month: 'Jul', emissions: 3490, reduction: 4300, target: 2100, intensity: 70 },
-  { month: 'Aug', emissions: 2490, reduction: 4300, target: 2300, intensity: 68 },
-  { month: 'Sep', emissions: 2790, reduction: 4300, target: 2400, intensity: 62 },
-  { month: 'Oct', emissions: 3490, reduction: 4300, target: 2600, intensity: 71 },
-  { month: 'Nov', emissions: 2490, reduction: 4300, target: 2500, intensity: 63 },
-  { month: 'Dec', emissions: 2890, reduction: 4300, target: 2400, intensity: 64 },
-];
-
-const pieData = [
-  { name: 'Transportation', value: 400 },
-  { name: 'Energy', value: 300 },
-  { name: 'Manufacturing', value: 300 },
-  { name: 'Buildings', value: 200 },
-  { name: 'Waste', value: 100 }
-];
+const COLORS = ['#2D6A4F', '#52796F', '#84A098', '#B6C4C1'];
 
 const bubbleData = [
   { name: 'Facility A', emissions: 2400, efficiency: 75, size: 800 },
@@ -57,7 +38,7 @@ const bubbleData = [
 
 const histogramData = Array.from({ length: 20 }, (_, i) => ({
   range: `${i * 50}-${(i + 1) * 50}`,
-  count: Math.floor(Math.random() * 100)
+  count: Math.floor(Math.random() * 100),
 }));
 
 const stackedData = [
@@ -69,241 +50,384 @@ const stackedData = [
   { month: 'Jun', direct: 2390, indirect: 3800, other: 2400 },
 ];
 
-const data = [
-  { month: 'Jan', emissions: 4000, reduction: 2400, target: 3000 },
-  { month: 'Feb', emissions: 3000, reduction: 1398, target: 2800 },
-  { month: 'Mar', emissions: 2000, reduction: 9800, target: 2600 },
-  { month: 'Apr', emissions: 2780, reduction: 3908, target: 2400 },
-  { month: 'May', emissions: 1890, reduction: 4800, target: 2200 },
-  { month: 'Jun', emissions: 2390, reduction: 3800, target: 2000 },
-];
-
-const COLORS = ['#2D6A4F', '#52796F', '#84A098', '#B6C4C1'];
-
 export default function DashboardPage() {
-  const [selectedMetric, setSelectedMetric] = useState('emissions');
+  const { data, loading, error } = useEmissionsData();
+  const [timeRange, setTimeRange] = useState('1y'); // 1y, 6m, 3m, 1m
+  const [selectedSource, setSelectedSource] = useState('all');
+
+  const filteredData = useMemo(() => {
+    if (!data?.monthlyData) return [];
+
+    const months =
+      timeRange === '1y'
+        ? 12
+        : timeRange === '6m'
+        ? 6
+        : timeRange === '3m'
+        ? 3
+        : 1;
+
+    return data.monthlyData.slice(-months);
+  }, [data, timeRange]);
+
+  if (loading) return <div className={styles.loading}>Loading dashboard data...</div>;
+  if (error) return <div className={styles.error}>{error}</div>;
+  if (!data?.monthlyData) return <div className={styles.error}>No data available</div>;
 
   return (
     <div className={styles.dashboard}>
-      <h1>Carbon Emissions Dashboard</h1>
-      
-      <div className={styles.grid}>
-        {/* Line Graph with Brush */}
-        <div className={styles.card}>
-          <h2>Emissions Trend</h2>
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={monthlyData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line type="monotone" dataKey="emissions" stroke="#2D6A4F" />
-              <Line type="monotone" dataKey="target" stroke="#84A098" strokeDasharray="5 5" />
-              <Brush dataKey="month" height={30} stroke="#2D6A4F" />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
+      <h1>Sustainability Overview Dashboard</h1>
 
-        {/* Full Circle Pie Chart */}
-        <div className={styles.card}>
-          <h2>Carbon Sources</h2>
-          <ResponsiveContainer width="100%" height={300}>
-            <PieChart>
-              <Pie
-                data={[
-                  { name: 'Transportation', value: 400 },
-                  { name: 'Energy', value: 300 },
-                  { name: 'Manufacturing', value: 300 },
-                  { name: 'Buildings', value: 200 },
-                  { name: 'Waste', value: 100 }
-                ]}
-                cx="50%"
-                cy="50%"
-                outerRadius={100}
-                fill="#8884d8"
-                dataKey="value"
-                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                labelLine={true}
-              >
-                {pieData.map((entry, index) => (
-                  <Cell 
-                    key={`cell-${index}`} 
-                    fill={`hsl(145, ${70 - index * 10}%, ${45 + index * 5}%)`}
-                  />
-                ))}
-              </Pie>
-              <Tooltip />
-              <Legend 
-                layout="vertical" 
-                align="right"
-                verticalAlign="middle"
-              />
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
+      <div className={styles.filters}>
+        <select
+          value={timeRange}
+          onChange={(e) => setTimeRange(e.target.value)}
+          className={styles.select}
+        >
+          <option value="1y">Last 12 months</option>
+          <option value="6m">Last 6 months</option>
+          <option value="3m">Last 3 months</option>
+          <option value="1m">Last month</option>
+        </select>
 
-        {/* Donut Chart */}
-        <div className={styles.card}>
-          <h2>Emissions by Scope</h2>
-          <ResponsiveContainer width="100%" height={300}>
-            <PieChart>
-              <Pie
-                data={[
-                  { name: 'Scope 1', value: 400 },
-                  { name: 'Scope 2', value: 300 },
-                  { name: 'Scope 3', value: 300 }
-                ]}
-                cx="50%"
-                cy="50%"
-                innerRadius={60}
-                outerRadius={80}
-                fill="#8884d8"
-                paddingAngle={5}
-                dataKey="value"
-              >
-                {[0, 1, 2].map((index) => (
-                  <Cell 
-                    key={`cell-${index}`} 
-                    fill={COLORS[index % COLORS.length]} 
-                  />
-                ))}
-              </Pie>
-              <Tooltip />
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
+        <select
+          value={selectedSource}
+          onChange={(e) => setSelectedSource(e.target.value)}
+          className={styles.select}
+        >
+          <option value="all">All Sources</option>
+          <option value="transportation">Transportation</option>
+          <option value="energy">Energy</option>
+          <option value="manufacturing">Manufacturing</option>
+          <option value="buildings">Buildings</option>
+          <option value="waste">Waste</option>
+        </select>
+      </div>
 
-        {/* Bubble Chart */}
-        <div className={styles.card}>
-          <h2>Facility Analysis</h2>
-          <ResponsiveContainer width="100%" height={300}>
-            <ScatterChart>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="emissions" name="Emissions" />
-              <YAxis dataKey="efficiency" name="Efficiency" />
-              <Tooltip cursor={{ strokeDasharray: '3 3' }} />
-              <Legend />
-              <Scatter
-                name="Facilities"
-                data={bubbleData}
-                fill="#2D6A4F"
-              >
-                {bubbleData.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
-                  />
-                ))}
-              </Scatter>
-            </ScatterChart>
-          </ResponsiveContainer>
-        </div>
-
-        {/* Histogram */}
-        <div className={styles.card}>
-          <h2>Emissions Distribution</h2>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={histogramData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="range" />
-              <YAxis />
-              <Tooltip />
-              <Bar dataKey="count" fill="#2D6A4F">
-                {histogramData.map((entry, index) => (
-                  <Cell 
-                    key={`cell-${index}`}
-                    fill={`rgba(45, 106, 79, ${0.3 + (0.7 * index / histogramData.length)})`}
-                  />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-
-        {/* Emissions Over Time */}
-        <div className={styles.card}>
-          <h2>Emissions Over Time</h2>
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={data}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line type="monotone" dataKey="emissions" stroke="#2D6A4F" />
-              <Line type="monotone" dataKey="target" stroke="#84A098" strokeDasharray="5 5" />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-
-        {/* Reduction Progress */}
-        <div className={styles.card}>
-          <h2>Reduction Progress</h2>
-          <ResponsiveContainer width="100%" height={300}>
-            <AreaChart data={data}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Area type="monotone" dataKey="reduction" stroke="#2D6A4F" fill="#84A098" />
-            </AreaChart>
-          </ResponsiveContainer>
-        </div>
-
-        {/* Emissions Sources */}
-        <div className={styles.card}>
-          <h2>Emissions Sources</h2>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={data}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="emissions" fill="#2D6A4F" />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-
-        {/* Stacked Emissions */}
-        <div className={styles.card}>
-          <h2>Emissions Breakdown</h2>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={stackedData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="direct" stackId="a" fill="#2D6A4F" />
-              <Bar dataKey="indirect" stackId="a" fill="#52796F" />
-              <Bar dataKey="other" stackId="a" fill="#84A098" />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-
-        {/* Heat Map-like Visualization */}
-        <div className={styles.card}>
-          <h2>Monthly Intensity</h2>
-          <div className={styles.heatmap}>
-            {data.map((item, index) => (
-              <div 
-                key={item.month} 
-                className={styles.heatmapCell}
-                style={{
-                  backgroundColor: `rgba(45, 106, 79, ${item.emissions / 4000})`,
-                }}
-              >
-                <span className={styles.month}>{item.month}</span>
-                <span className={styles.value}>{item.emissions}</span>
-              </div>
-            ))}
+      <section className={styles.section}>
+        <h2>Energy Consumption Overview</h2>
+        <div className={styles.metrics}>
+          <div className={styles.metricCard}>
+            <h3>Total Energy Usage</h3>
+            <p>{data.monthlyData?.reduce((sum, month) => sum + (month?.intensity || 0), 0).toFixed(2)} kWh</p>
+          </div>
+          <div className={styles.metricCard}>
+            <h3>Renewable Energy</h3>
+            <p>35%</p>
+          </div>
+          <div className={styles.metricCard}>
+            <h3>Energy Efficiency</h3>
+            <p>78/100</p>
+          </div>
+          <div className={styles.metricCard}>
+            <h3>Peak Demand</h3>
+            <p>{Math.max(...(data.monthlyData?.map(month => month?.intensity || 0) || [0])).toFixed(2)} kW</p>
+          </div>
+          <div className={styles.metricCard}>
+            <h3>Energy Cost</h3>
+            <p>${(data.monthlyData?.reduce((sum, month) => sum + (month?.intensity || 0) * 0.12, 0) || 0).toFixed(2)}</p>
           </div>
         </div>
-      </div>
+
+        <div className={styles.grid}>
+          <div className={styles.card}>
+            <h2>Energy Usage Trend</h2>
+            <ResponsiveContainer width="100%" height={300}>
+              <ComposedChart data={filteredData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis yAxisId="left" />
+                <YAxis yAxisId="right" orientation="right" />
+                <Tooltip />
+                <Legend />
+                <Area type="monotone" dataKey="intensity" name="Energy Usage" fill="#2D6A4F" stroke="#2D6A4F" yAxisId="left" fillOpacity={0.3} />
+                <Line type="monotone" dataKey="target" name="Target Usage" stroke="#84A098" strokeDasharray="5 5" yAxisId="left" />
+                <Bar dataKey="reduction" name="Energy Savings" fill="#40916C" yAxisId="right" />
+                <Brush dataKey="month" height={30} stroke="#2D6A4F" />
+              </ComposedChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div className={styles.card}>
+            <h2>Energy Source Distribution</h2>
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  data={[
+                    { name: 'Solar', value: 20 },
+                    { name: 'Wind', value: 15 },
+                    { name: 'Grid Power', value: 45 },
+                    { name: 'Natural Gas', value: 20 }
+                  ]}
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={100}
+                  fill="#8884d8"
+                  dataKey="value"
+                  label={({ name, percent }) =>
+                    `${name} ${(percent * 100).toFixed(0)}%`
+                  }
+                  labelLine={true}
+                >
+                  {[0, 1, 2, 3].map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index]}
+                    />
+                  ))}
+                </Pie>
+                <Tooltip />
+                <Legend layout="vertical" align="right" verticalAlign="middle" />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div className={styles.card}>
+            <h2>Energy Efficiency by Facility</h2>
+            <ResponsiveContainer width="100%" height={300}>
+              <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+                <CartesianGrid />
+                <XAxis type="number" dataKey="emissions" name="Emissions" unit=" tCO2e" />
+                <YAxis type="number" dataKey="efficiency" name="Efficiency" unit="%" />
+                <Tooltip cursor={{ strokeDasharray: '3 3' }} />
+                <Legend />
+                <Scatter name="Facilities" data={bubbleData} fill="#2D6A4F">
+                  {bubbleData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Scatter>
+              </ScatterChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div className={styles.card}>
+            <h2>Energy Consumption Distribution</h2>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={histogramData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="range" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="count" fill="#2D6A4F" name="Frequency" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </section>
+
+      <section className={styles.section}>
+        <h2>Carbon Emissions Overview</h2>
+        <div className={styles.metrics}>
+          <div className={styles.metricCard}>
+            <h3>Total Emissions</h3>
+            <p>{data.monthlyData.reduce((sum, month) => sum + month.emissions, 0).toFixed(2)} tCO2e</p>
+          </div>
+          <div className={styles.metricCard}>
+            <h3>Emission Reduction</h3>
+            <p>{data.monthlyData.reduce((sum, month) => sum + month.reduction, 0).toFixed(2)} tCO2e</p>
+          </div>
+          <div className={styles.metricCard}>
+            <h3>Carbon Score</h3>
+            <p>82/100</p>
+          </div>
+        </div>
+
+        <div className={styles.grid}>
+          <div className={styles.card}>
+            <h2>Emissions by Scope</h2>
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  data={[
+                    { name: 'Scope 1', value: 400 },
+                    { name: 'Scope 2', value: 300 },
+                    { name: 'Scope 3', value: 300 },
+                  ]}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={60}
+                  outerRadius={80}
+                  fill="#8884d8"
+                  paddingAngle={5}
+                  dataKey="value"
+                >
+                  {[0, 1, 2].map((index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
+                  ))}
+                </Pie>
+                <Tooltip />
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div className={styles.card}>
+            <h2>Emissions Breakdown</h2>
+            <ResponsiveContainer width="100%" height={300}>
+              <AreaChart data={stackedData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Area
+                  type="monotone"
+                  dataKey="direct"
+                  stackId="1"
+                  stroke={COLORS[0]}
+                  fill={COLORS[0]}
+                  name="Direct Emissions"
+                />
+                <Area
+                  type="monotone"
+                  dataKey="indirect"
+                  stackId="1"
+                  stroke={COLORS[1]}
+                  fill={COLORS[1]}
+                  name="Indirect Emissions"
+                />
+                <Area
+                  type="monotone"
+                  dataKey="other"
+                  stackId="1"
+                  stroke={COLORS[2]}
+                  fill={COLORS[2]}
+                  name="Other Emissions"
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div className={styles.card}>
+            <h2>Facility Emissions Analysis</h2>
+            <ResponsiveContainer width="100%" height={300}>
+              <ScatterChart>
+                <CartesianGrid />
+                <XAxis type="number" dataKey="emissions" name="Emissions" unit=" tCO2e" />
+                <YAxis type="number" dataKey="efficiency" name="Efficiency" unit="%" />
+                <Tooltip cursor={{ strokeDasharray: '3 3' }} />
+                <Legend />
+                <Scatter
+                  name="Facilities"
+                  data={bubbleData}
+                  fill="#2D6A4F"
+                />
+              </ScatterChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div className={styles.card}>
+            <h2>Emissions Distribution</h2>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={histogramData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="range" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="count" fill="#2D6A4F">
+                  {histogramData.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={`rgba(45, 106, 79, ${0.3 + (0.7 * index) / histogramData.length})`}
+                    />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div className={styles.card}>
+            <h2>Emissions Over Time</h2>
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={filteredData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line type="monotone" dataKey="emissions" stroke="#2D6A4F" />
+                <Line
+                  type="monotone"
+                  dataKey="target"
+                  stroke="#84A098"
+                  strokeDasharray="5 5"
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div className={styles.card}>
+            <h2>Reduction Progress</h2>
+            <ResponsiveContainer width="100%" height={300}>
+              <AreaChart data={filteredData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Area
+                  type="monotone"
+                  dataKey="reduction"
+                  stroke="#2D6A4F"
+                  fill="#84A098"
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div className={styles.card}>
+            <h2>Emissions Sources</h2>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={filteredData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="emissions" fill="#2D6A4F" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div className={styles.card}>
+            <h2>Emissions Breakdown</h2>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={stackedData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="direct" stackId="a" fill="#2D6A4F" />
+                <Bar dataKey="indirect" stackId="a" fill="#52796F" />
+                <Bar dataKey="other" stackId="a" fill="#84A098" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div className={styles.card}>
+            <h2>Monthly Intensity</h2>
+            <div className={styles.heatmap}>
+              {filteredData.map((item) => (
+                <div
+                  key={item.month}
+                  className={styles.heatmapCell}
+                  style={{
+                    backgroundColor: `rgba(45, 106, 79, ${item.intensity / 100})`,
+                  }}
+                >
+                  <span className={styles.month}>{item.month}</span>
+                  <span className={styles.value}>{item.intensity}%</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
