@@ -2,7 +2,7 @@
 
 import { useEmissionsData } from '@/hooks/useEmissionsData';
 import { Card, Grid, Typography, Container } from '@mui/material';
-import { ScatterChart, Scatter, Treemap as TreeMap, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Brush, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Bubble, BubbleChart, AreaChart, Area, ComposedChart, Bar } from 'recharts';
+import { Treemap as TreeMap, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Brush, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Area, ComposedChart, Bar } from 'recharts';
 
 // Color palette for charts
 const COLORS = ['#2D6A4F', '#84A098', '#8884d8', '#40916C', '#52B788'];
@@ -13,14 +13,6 @@ export default function Scope3Dashboard() {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
   if (!data) return <div>No data available</div>;
-
-  // Transform data for scatter plot
-  const scatterData = data.monthlyData.map(item => ({
-    x: item.emissions,
-    y: item.intensity,
-    z: item.reduction,
-    name: item.month
-  }));
 
   // Transform data for treemap
   const treeMapData = {
@@ -182,7 +174,7 @@ export default function Scope3Dashboard() {
               <TreeMap
                 data={[treeMapData]}
                 dataKey="size"
-                ratio={4/3}
+                aspectRatio={4/3}
                 stroke="#fff"
                 fill={COLORS[0]}
               >

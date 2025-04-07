@@ -1,15 +1,13 @@
 'use client';
 
-import { useState } from 'react';
 import { useEmissionsData } from '@/hooks/useEmissionsData';
-import { Card, Grid, Box, Typography, Container } from '@mui/material';
-import { AreaChart, Area, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Brush, ComposedChart, Bar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts';
+import { Card, Grid, Typography, Container } from '@mui/material';
+import { AreaChart, Area, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Brush, ComposedChart, Bar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts';
 
 const COLORS = ['#2D6A4F', '#52796F', '#84A098', '#B6C4C1'];
 
 export default function Scope2Dashboard() {
   const { data, loading, error } = useEmissionsData();
-  const [timeRange, setTimeRange] = useState('monthly');
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;

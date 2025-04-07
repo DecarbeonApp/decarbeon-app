@@ -1,0 +1,44 @@
+.errorContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background-color: #f8faf9;
+}
+
+.errorContent {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+.errorContent h2 {
+  color: #1B4332;
+  font-size: 24px;
+  margin-bottom: 1rem;
+}
+
+.errorContent p {
+  color: #52796F;
+  margin-bottom: 1.5rem;
+}
+
+.resetButton {
+  background-color: #2D6A4F;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.resetButton:hover {
+  background-color: #1B4332;
+}

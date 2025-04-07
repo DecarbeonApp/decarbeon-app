@@ -64,8 +64,8 @@ export default function Login() {
     e.preventDefault();
     
     if (validateForm()) {
-      // Just redirect to dashboard on login
-      router.push('/dashboard');
+      // Redirect to sustainability metrics calculator after successful login
+      router.push('/sustainability-metrics');
     }
   };
 

@@ -2,7 +2,7 @@
 
 import { useEmissionsData } from '@/hooks/useEmissionsData';
 import { Card, Grid, Typography, Container } from '@mui/material';
-import { LineChart, Line, PieChart, Pie, BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, RadialBarChart, RadialBar, AreaChart, Area, ComposedChart } from 'recharts';
+import { LineChart, Line, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, RadialBarChart, RadialBar, Area, ComposedChart } from 'recharts';
 
 const COLORS = ['#2D6A4F', '#52796F', '#84A098', '#B6C4C1'];
 
@@ -148,10 +148,8 @@ return (
                 endAngle={0}
               >
                 <RadialBar
-                  minAngle={15}
-                  label={{ fill: '#666', position: 'insideStart' }}
+                  label={{ position: 'insideStart' }}
                   background
-                  clockWise={true}
                   dataKey="value"
                 >
                   {data.sourceData.map((entry, index) => (

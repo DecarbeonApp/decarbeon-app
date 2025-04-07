@@ -128,20 +128,7 @@ const DashboardSidebar: FC<DashboardSidebarProps> = ({ isExpanded, onToggle }) =
             />
         </div>
 
-        <div className={styles.navGroup}>
-          <div className={styles.navLabel}>Tools</div>
-          <NavItem
-            href="/calculator"
-            label="Carbon Calculator"
-            isActive={isActive('/calculator')}
-            isExpanded={isExpanded}
-            icon={
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path d="M4 4h16v16H4V4zm4 4h8m-8 4h8m-8 4h8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            }
-          />
-        </div>
+
       </nav>
     </aside>
   );

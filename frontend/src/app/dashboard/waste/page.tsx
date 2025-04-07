@@ -158,13 +158,9 @@ const renderCharts = () => (
         <Treemap
           data={wasteCompositionData}
           dataKey="size"
-          ratio={4/3}
+          aspectRatio={4/3}
           stroke="#fff"
           fill="#2D6A4F"
-          content={{
-            fill: '#fff',
-            fontSize: 14,
-          }}
         >
           <Tooltip />
         </Treemap>

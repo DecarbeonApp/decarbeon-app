@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 interface EmissionsData {
   monthlyData: Array<{
@@ -34,121 +34,150 @@ export function useEmissionsData(): UseEmissionsDataReturn {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [ws, setWs] = useState<WebSocket | null>(null);
-  const [reconnectAttempt, setReconnectAttempt] = useState(0);
+  const [isConnecting, setIsConnecting] = useState(false);
+  const reconnectAttemptRef = useRef(0);
   const MAX_RECONNECT_ATTEMPTS = 5;
   const RECONNECT_DELAY = 3000;
-
-  // Initial data fetch from REST API
-  useEffect(() => {
-    const fetchInitialData = async () => {
-      try {
-        const response = await fetch(`${API_URL}/api/metrics/carbon`);
-        if (!response.ok) throw new Error('Failed to fetch initial data');
-        const initialData = await response.json();
-        setData(initialData);
-      } catch (err) {
-        console.error('Error fetching initial data:', err);
-        setError('Failed to fetch initial data');
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchInitialData();
-  }, []);
+  const INITIAL_CONNECTION_TIMEOUT = 5000;
+  const isSubscribedRef = useRef(true);
 
   const connectWebSocket = () => {
-    const websocket = new WebSocket(WS_URL);
-
-    websocket.onopen = () => {
-      console.log("WebSocket connected");
-      setWs(websocket);
-      setReconnectAttempt(0);
-      setError(null);
-    };
-
-    websocket.onmessage = (event) => {
-      try {
-        const message = JSON.parse(event.data);
-        if (!message.type || !message.data) {
-          throw new Error("Invalid message format");
+    if (isConnecting || !isSubscribedRef.current) return null;
+    
+    setIsConnecting(true);
+    let connectionTimeout: NodeJS.Timeout;
+    
+    try {
+      const websocket = new WebSocket(WS_URL);
+      
+      connectionTimeout = setTimeout(() => {
+        if (websocket.readyState !== WebSocket.OPEN) {
+          websocket.close();
+          setError("WebSocket connection timeout");
+          setIsConnecting(false);
         }
-        if (message.type === "data_update" || message.type === "initial_data") {
-          setData(prevData => ({
-            ...prevData,
-            ...message.data,
-            monthlyData: Array.isArray(message.data.monthlyData) ? message.data.monthlyData : prevData.monthlyData,
-            sourceData: Array.isArray(message.data.sourceData) ? message.data.sourceData : prevData.sourceData
-          }));
+      }, INITIAL_CONNECTION_TIMEOUT);
+
+      websocket.onopen = () => {
+        if (!isSubscribedRef.current) {
+          websocket.close();
+          return;
         }
-      } catch (err) {
-        console.error("Error processing WebSocket message:", err);
-        setError("Error processing real-time updates");
+        clearTimeout(connectionTimeout);
+        console.log("WebSocket connected");
+        setWs(websocket);
+        reconnectAttemptRef.current = 0;
+        setIsConnecting(false);
+        setError(null);
+
+        // Request initial data after connection
+        websocket.send(JSON.stringify({ type: 'get_metrics' }));
+      };
+
+      websocket.onmessage = (event) => {
+        if (!isSubscribedRef.current) return;
+        try {
+          const message = JSON.parse(event.data);
+          if (!message.type || !message.data) {
+            throw new Error("Invalid message format");
+          }
+          if (message.type === "data_update" || message.type === "metrics_update" || message.type === "initial_data") {
+            setData(prevData => ({
+              ...prevData,
+              ...message.data.carbonMetrics,
+              monthlyData: Array.isArray(message.data.carbonMetrics?.monthlyData) 
+                ? message.data.carbonMetrics.monthlyData 
+                : prevData.monthlyData,
+              sourceData: Array.isArray(message.data.carbonMetrics?.sourceData) 
+                ? message.data.carbonMetrics.sourceData 
+                : prevData.sourceData
+            }));
+            setLoading(false);
+          }
+        } catch (err) {
+          console.error("Error processing WebSocket message:", err);
+          if (isSubscribedRef.current) {
+            setError("Error processing real-time updates");
+          }
+        }
+      };
+
+      websocket.onerror = (event: Event) => {
+        clearTimeout(connectionTimeout);
+        const wsError = event as Event;
+        const errorMessage =
+          wsError instanceof Error
+            ? wsError.message
+            : "Network connection error";
+
+        console.error("WebSocket error:", errorMessage);
+        if (isSubscribedRef.current) {
+          setError(`WebSocket connection error: ${errorMessage}`);
+          setIsConnecting(false);
+
+          if (reconnectAttemptRef.current < MAX_RECONNECT_ATTEMPTS) {
+            const delay = RECONNECT_DELAY * Math.pow(2, reconnectAttemptRef.current);
+            setTimeout(() => {
+              if (isSubscribedRef.current) {
+                reconnectAttemptRef.current += 1;
+                connectWebSocket();
+              }
+            }, delay);
+          }
+        }
+      };
+
+      websocket.onclose = (event) => {
+        clearTimeout(connectionTimeout);
+        console.log("WebSocket disconnected", event.code, event.reason);
+        if (isSubscribedRef.current) {
+          setWs(null);
+          setIsConnecting(false);
+          
+          if (event.code === 1000 || event.code === 1001) {
+            // Normal closure or going away
+            return;
+          }
+          
+          if (reconnectAttemptRef.current < MAX_RECONNECT_ATTEMPTS) {
+            const delay = RECONNECT_DELAY * Math.pow(2, reconnectAttemptRef.current);
+            setTimeout(() => {
+              if (isSubscribedRef.current) {
+                reconnectAttemptRef.current += 1;
+                connectWebSocket();
+              }
+            }, delay);
+          } else {
+            setError(
+              "Failed to establish WebSocket connection after multiple attempts"
+            );
+          }
+        }
+      };
+
+      return websocket;
+    } catch (err) {
+      console.error("Error creating WebSocket:", err);
+      if (isSubscribedRef.current) {
+        setError("Failed to create WebSocket connection");
+        setIsConnecting(false);
       }
-    };
-
-    websocket.onerror = (event: Event) => {
-      const wsError = event as Event;
-      const errorMessage =
-        wsError instanceof Error
-          ? wsError.message
-          : wsError instanceof Event
-          ? "Network connection error"
-          : "Unknown WebSocket error";
-
-      console.error("WebSocket error:", errorMessage);
-      setError(`WebSocket connection error: ${errorMessage}`);
-
-      if (reconnectAttempt < MAX_RECONNECT_ATTEMPTS) {
-        setTimeout(() => {
-          setReconnectAttempt((prev) => prev + 1);
-          connectWebSocket();
-        }, RECONNECT_DELAY * (reconnectAttempt + 1));
-      }
-    };
-
-    websocket.onclose = () => {
-      console.log("WebSocket disconnected");
-      setWs(null);
-      if (reconnectAttempt < MAX_RECONNECT_ATTEMPTS) {
-        setTimeout(() => {
-          setReconnectAttempt((prev) => prev + 1);
-          connectWebSocket();
-        }, RECONNECT_DELAY);
-      } else {
-        setError(
-          "Failed to establish WebSocket connection after multiple attempts"
-        );
-      }
-    };
-
-    return websocket;
+      return null;
+    }
   };
 
   useEffect(() => {
-    const abortController = new AbortController();
-
-    // Initial data fetch
-    fetch(`${API_URL}/api/emissions`, { signal: abortController.signal })
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-        return res.json();
-      })
-      .then((data) => {
-        setData(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        if (err.name === "AbortError") return;
-        setError("Failed to fetch emissions data");
-        setLoading(false);
-      });
-
-    // WebSocket connection
+    isSubscribedRef.current = true;
     const websocket = connectWebSocket();
 
     return () => {
-      abortController.abort();
-      websocket.close();
+      isSubscribedRef.current = false;
+      if (websocket) {
+        websocket.close(1000, "Component unmounting");
+      }
+      setWs(null);
+      setIsConnecting(false);
+      reconnectAttemptRef.current = 0;
     };
   }, []);
 

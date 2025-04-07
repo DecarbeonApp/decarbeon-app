@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import styles from './page.module.css';
+import { useStaticEmissionsData } from '@/hooks/useStaticEmissionsData';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, PieChart, Pie, Cell, LineChart, Line, ComposedChart, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Scatter } from 'recharts';
 
 const COLORS = ['#2D6A4F', '#52796F', '#84A098', '#B7C4C1'];
@@ -157,6 +158,7 @@ const renderCharts = (data: any[]) => (
 export default function CarbonMetricsPage() {
   const [activeScope, setActiveScope] = useState('scope1');
   const [timeRange, setTimeRange] = useState('monthly');
+  const { data } = useStaticEmissionsData();
 
   return (
     <div className={styles.container}>

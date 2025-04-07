@@ -139,9 +139,9 @@ const renderCharts = () => (
       <ResponsiveContainer width="100%" height={300}>
         <RadialBarChart cx="50%" cy="50%" innerRadius="10%" outerRadius="80%" data={waterEfficiencyMetrics}>
           <RadialBar
-            minAngle={15}
+            startAngle={90}
+            endAngle={-270}
             background
-            clockWise
             dataKey="efficiency"
             label={{ fill: '#666', position: 'insideStart' }}
           />
