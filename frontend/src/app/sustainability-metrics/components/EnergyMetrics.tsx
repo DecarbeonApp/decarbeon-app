@@ -53,24 +53,50 @@ const efficiencyTrends = [
 ];
 
 const commonStyles = {
+  chartContainer: {
+    minWidth: "33%",
+    backgroundColor: "#fff",
+    padding: "20px",
+    borderRadius: "8px",
+    boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
+  },
+  chartTitle: {
+    color: "#2D6A4F",
+    fontWeight: 600,
+    marginBottom: 1,
+  },
+  inputContainer: {
+    marginTop: "2rem",
+  },
+  inputHeader: {
+    padding: "12px 24px",
+    backgroundColor: "#e8f5e9",
+    borderRadius: "8px 8px 0 0",
+  },
+  inputContent: {
+    padding: "32px",
+    backgroundColor: "#f8f9fa",
+    borderRadius: "0 0 8px 8px",
+    marginBottom: "2rem"
+  },
   textFieldStyle: {
-    '& .MuiOutlinedInput-root': {
-      '&.Mui-focused fieldset': {
-        borderColor: '#2D6A4F',
+    "& .MuiOutlinedInput-root": {
+      "&.Mui-focused fieldset": {
+        borderColor: "#2D6A4F",
       },
     },
-    '& .MuiInputLabel-root.Mui-focused': {
-      color: '#2D6A4F',
+    "& .MuiInputLabel-root.Mui-focused": {
+      color: "#2D6A4F",
     },
   },
   selectStyle: {
-    '& .MuiOutlinedInput-root': {
-      '&.Mui-focused fieldset': {
-        borderColor: '#2D6A4F',
+    "& .MuiOutlinedInput-root": {
+      "&.Mui-focused fieldset": {
+        borderColor: "#2D6A4F",
       },
     },
-    '& .MuiInputLabel-root.Mui-focused': {
-      color: '#2D6A4F',
+    "& .MuiInputLabel-root.Mui-focused": {
+      color: "#2D6A4F",
     },
   },
 };
@@ -230,37 +256,14 @@ export default function EnergyMetrics() {
         </Grid>
       </div>
 
-      <div style={{ marginTop: "2rem" }}>
-        <div
-          style={{
-            padding: "12px 24px",
-            backgroundColor: "#e8f5e9",
-            borderRadius: "8px 8px 0 0",
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <Typography variant="subtitle1" fontWeight="bold" color="#2c6e49">
-              Input Data
-            </Typography>
-            <Typography variant="caption" color="#2c6e49">
-              * Required fields
-            </Typography>
+      <div style={commonStyles.inputContainer}>
+        <div style={commonStyles.inputHeader}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Typography variant="subtitle1" fontWeight="bold" color="#2c6e49">Input Data</Typography>
+            <Typography variant="caption" color="#2c6e49">* Required fields</Typography>
           </Box>
         </div>
-        <div
-          style={{
-            padding: "24px",
-            backgroundColor: "#fff",
-            borderRadius: "0 0 8px 8px",
-            boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
-          }}
-        >
+        <div style={commonStyles.inputContent}>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
               <TextField

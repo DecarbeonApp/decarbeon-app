@@ -134,6 +134,55 @@ export default function WaterMetrics() {
     });
   };
 
+  const commonStyles = {
+    chartContainer: {
+      minWidth: "33%",
+      backgroundColor: "#fff",
+      padding: "20px",
+      borderRadius: "8px",
+      boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
+    },
+    chartTitle: {
+      color: "#2D6A4F",
+      fontWeight: 600,
+      marginBottom: 1,
+    },
+    inputContainer: {
+      marginTop: "2rem",
+    },
+    inputHeader: {
+      padding: "12px 24px",
+      backgroundColor: "#e8f5e9",
+      borderRadius: "8px 8px 0 0",
+    },
+    inputContent: {
+      padding: "32px",
+      backgroundColor: "#f8f9fa",
+      borderRadius: "0 0 8px 8px",
+      marginBottom: "2rem"
+    },
+    textFieldStyle: {
+      "& .MuiOutlinedInput-root": {
+        "&.Mui-focused fieldset": {
+          borderColor: "#2D6A4F",
+        },
+      },
+      "& .MuiInputLabel-root.Mui-focused": {
+        color: "#2D6A4F",
+      },
+    },
+    selectStyle: {
+      "& .MuiOutlinedInput-root": {
+        "&.Mui-focused fieldset": {
+          borderColor: "#2D6A4F",
+        },
+      },
+      "& .MuiInputLabel-root.Mui-focused": {
+        color: "#2D6A4F",
+      },
+    },
+  };
+
   return (
     <div className="w-full">
       <div
@@ -142,7 +191,7 @@ export default function WaterMetrics() {
           padding: "32px",
           marginBottom: "2rem",
           backgroundColor: "#f8f9fa",
-          borderRadius: "12px",
+          borderRadius: "8px"
         }}
       >
         <Grid
@@ -157,6 +206,7 @@ export default function WaterMetrics() {
               backgroundColor: "#fff",
               padding: "20px",
               borderRadius: "8px",
+              boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
             }}
           >
             <Typography
@@ -195,6 +245,7 @@ export default function WaterMetrics() {
               backgroundColor: "#fff",
               padding: "20px",
               borderRadius: "8px",
+              boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
             }}
           >
             <Typography
@@ -234,6 +285,7 @@ export default function WaterMetrics() {
               backgroundColor: "#fff",
               padding: "20px",
               borderRadius: "8px",
+              boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
             }}
           >
             <Typography
@@ -268,14 +320,8 @@ export default function WaterMetrics() {
         </Grid>
       </div>
 
-      <div style={{ marginTop: "2rem" }}>
-        <div
-          style={{
-            padding: "12px 24px",
-            backgroundColor: "#e8f5e9",
-            borderRadius: "8px 8px 0 0",
-          }}
-        >
+      <div style={commonStyles.inputContainer}>
+        <div style={commonStyles.inputHeader}>
           <Box
             sx={{
               display: "flex",
@@ -283,21 +329,15 @@ export default function WaterMetrics() {
               alignItems: "center",
             }}
           >
-            <Typography variant="subtitle1" fontWeight="bold" color="#2c6e49">
+            <Typography variant="subtitle1" fontWeight="bold" color="#2D6A4F">
               Input Data
             </Typography>
-            <Typography variant="caption" color="#2c6e49">
+            <Typography variant="caption" color="#2D6A4F">
               * Required fields
             </Typography>
           </Box>
         </div>
-        <div
-          style={{
-            padding: "24px",
-            backgroundColor: "#fff",
-            borderRadius: "0 0 8px 8px",
-          }}
-        >
+        <div style={commonStyles.inputContent}>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -310,32 +350,14 @@ export default function WaterMetrics() {
                 onChange={handleInputChange}
                 InputLabelProps={{ shrink: true }}
                 helperText="Select the month for which you are reporting data"
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#2D6A4F",
-                    },
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "#2D6A4F",
-                  },
-                }}
+                sx={commonStyles.textFieldStyle}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <FormControl
                 fullWidth
                 required
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#2D6A4F",
-                    },
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "#2D6A4F",
-                  },
-                }}
+                sx={commonStyles.selectStyle}
               >
                 <InputLabel>Water Source</InputLabel>
                 <Select
@@ -364,16 +386,7 @@ export default function WaterMetrics() {
                   e.target instanceof HTMLElement && e.target.blur()
                 }
                 helperText="Total water consumption from all sources"
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#2D6A4F",
-                    },
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "#2D6A4F",
-                  },
-                }}
+                sx={commonStyles.textFieldStyle}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -505,16 +518,7 @@ export default function WaterMetrics() {
               <FormControl
                 fullWidth
                 required
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#2D6A4F",
-                    },
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "#2D6A4F",
-                  },
-                }}
+                sx={commonStyles.selectStyle}
               >
                 <InputLabel>Treatment Method</InputLabel>
                 <Select

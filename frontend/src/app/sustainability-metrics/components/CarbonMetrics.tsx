@@ -79,24 +79,50 @@ function CarbonMetrics() {
   };
 
   const commonStyles = {
+    chartContainer: {
+      minWidth: "33%",
+      backgroundColor: "#fff",
+      padding: "20px",
+      borderRadius: "8px",
+      boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
+    },
+    chartTitle: {
+      color: "#2D6A4F",
+      fontWeight: 600,
+      marginBottom: 1,
+    },
+    inputContainer: {
+      marginTop: "2rem",
+    },
+    inputHeader: {
+      padding: "12px 24px",
+      backgroundColor: "#e8f5e9",
+      borderRadius: "8px 8px 0 0",
+    },
+    inputContent: {
+      padding: "32px",
+      backgroundColor: "#f8f9fa",
+      borderRadius: "0 0 8px 8px",
+      marginBottom: "2rem"
+    },
     textFieldStyle: {
-      '& .MuiOutlinedInput-root': {
-        '&.Mui-focused fieldset': {
-          borderColor: '#2D6A4F',
+      "& .MuiOutlinedInput-root": {
+        "&.Mui-focused fieldset": {
+          borderColor: "#2D6A4F",
         },
       },
-      '& .MuiInputLabel-root.Mui-focused': {
-        color: '#2D6A4F',
+      "& .MuiInputLabel-root.Mui-focused": {
+        color: "#2D6A4F",
       },
     },
     selectStyle: {
-      '& .MuiOutlinedInput-root': {
-        '&.Mui-focused fieldset': {
-          borderColor: '#2D6A4F',
+      "& .MuiOutlinedInput-root": {
+        "&.Mui-focused fieldset": {
+          borderColor: "#2D6A4F",
         },
       },
-      '& .MuiInputLabel-root.Mui-focused': {
-        color: '#2D6A4F',
+      "& .MuiInputLabel-root.Mui-focused": {
+        color: "#2D6A4F",
       },
     },
   };
@@ -224,194 +250,190 @@ function CarbonMetrics() {
         </Grid>
       </div>
 
-      <div style={{ marginTop: '2rem' }}>
-        <div style={{ padding: '12px 24px', backgroundColor: '#e8f5e9', borderRadius: '8px 8px 0 0' }}>
+      <div style={commonStyles.inputContainer}>
+        <div style={commonStyles.inputHeader}>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <Typography variant="subtitle1" fontWeight="bold" color="#2c6e49">Input Data</Typography>
             <Typography variant="caption" color="#2c6e49">* Required fields</Typography>
           </Box>
         </div>
-        <div style={{ padding: '24px', backgroundColor: '#fff', borderRadius: '0 0 8px 8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-
-            <Typography variant="caption" color="#2c6e49">
-              * Required fields
-            </Typography>
-        </div>
-        <div className="form-content bg-white p-6">
-          <Grid container spacing={3}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                fullWidth
-                type="month"
-                name="month"
-                label="Reporting Month"
-                value={carbonMetrics.month}
-                onChange={handleInputChange}
-                InputLabelProps={{ shrink: true }}
-                helperText="Select the month for which you are reporting data"
-                sx={commonStyles.textFieldStyle}
-              />
+        <div style={commonStyles.inputContent}>
+          <div className="form-content bg-white p-6">
+            <Grid container spacing={3}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  type="month"
+                  name="month"
+                  label="Reporting Month"
+                  value={carbonMetrics.month}
+                  onChange={handleInputChange}
+                  InputLabelProps={{ shrink: true }}
+                  helperText="Select the month for which you are reporting data"
+                  sx={commonStyles.textFieldStyle}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth required sx={commonStyles.selectStyle}>
+                  <InputLabel>Emission Source</InputLabel>
+                  <Select
+                    value={carbonMetrics.sourceType}
+                    label="Emission Source"
+                    onChange={handleSelectChange}
+                    name="sourceType"
+                  >
+                    <MenuItem value="direct">Direct Emissions</MenuItem>
+                    <MenuItem value="indirect">Indirect Emissions</MenuItem>
+                    <MenuItem value="valuechain">Value Chain Emissions</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  type="number"
+                  name="scope1Emissions"
+                  label="Scope 1 Emissions (tCO2e)"
+                  value={carbonMetrics.scope1Emissions}
+                  onChange={handleInputChange}
+                  onWheel={(e) => e.target instanceof HTMLElement && e.target.blur()}
+                  helperText="Direct emissions from owned sources"
+                  sx={commonStyles.textFieldStyle}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  type="number"
+                  name="scope2Emissions"
+                  label="Scope 2 Emissions (tCO2e)"
+                  value={carbonMetrics.scope2Emissions}
+                  onChange={handleInputChange}
+                  onWheel={(e) => e.target instanceof HTMLElement && e.target.blur()}
+                  helperText="Indirect emissions from purchased energy"
+                  sx={commonStyles.textFieldStyle}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  type="number"
+                  name="scope3Emissions"
+                  label="Scope 3 Emissions (tCO2e)"
+                  value={carbonMetrics.scope3Emissions}
+                  onChange={handleInputChange}
+                  onWheel={(e) => e.target instanceof HTMLElement && e.target.blur()}
+                  helperText="Other indirect emissions"
+                  sx={commonStyles.textFieldStyle}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  type="number"
+                  name="emissionIntensity"
+                  label="Emission Intensity (tCO2e/unit)"
+                  value={carbonMetrics.emissionIntensity}
+                  onChange={handleInputChange}
+                  onWheel={(e) => e.target instanceof HTMLElement && e.target.blur()}
+                  helperText="Carbon emissions per unit of production"
+                  sx={commonStyles.textFieldStyle}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  name="offsetProject"
+                  label="Carbon Offset Project Name"
+                  value={carbonMetrics.offsetProject}
+                  onChange={handleInputChange}
+                  helperText="Name of the carbon offset project"
+                  sx={commonStyles.textFieldStyle}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  type="number"
+                  name="offsetAmount"
+                  label="Offset Amount (tCO2e)"
+                  value={carbonMetrics.offsetAmount}
+                  onChange={handleInputChange}
+                  onWheel={(e) => e.target instanceof HTMLElement && e.target.blur()}
+                  helperText="Amount of carbon emissions offset"
+                  sx={commonStyles.textFieldStyle}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth required sx={commonStyles.selectStyle}>
+                  <InputLabel>Reduction Initiative</InputLabel>
+                  <Select
+                    value={carbonMetrics.reductionInitiative}
+                    label="Reduction Initiative"
+                    onChange={handleSelectChange}
+                    name="reductionInitiative"
+                  >
+                    <MenuItem value="renewable">
+                      Renewable Energy Adoption
+                    </MenuItem>
+                    <MenuItem value="efficiency">
+                      Energy Efficiency Improvements
+                    </MenuItem>
+                    <MenuItem value="transport">
+                      Sustainable Transportation
+                    </MenuItem>
+                    <MenuItem value="waste">Waste Reduction Programs</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  type="number"
+                  name="initiativeImpact"
+                  label="Initiative Impact (tCO2e)"
+                  value={carbonMetrics.initiativeImpact}
+                  onChange={handleInputChange}
+                  onWheel={(e) => e.target instanceof HTMLElement && e.target.blur()}
+                  helperText="Expected emissions reduction from initiative"
+                  sx={commonStyles.textFieldStyle}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  name="verificationMethod"
+                  label="Verification Method"
+                  value={carbonMetrics.verificationMethod}
+                  onChange={handleInputChange}
+                  helperText="Method used to verify emission reductions"
+                  sx={commonStyles.textFieldStyle}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  type="month"
+                  name="projectTimeline"
+                  label="Project Completion Timeline"
+                  value={carbonMetrics.projectTimeline}
+                  onChange={handleInputChange}
+                  InputLabelProps={{ shrink: true }}
+                  helperText="Expected completion date of reduction initiative"
+                  sx={commonStyles.textFieldStyle}
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <FormControl fullWidth required sx={commonStyles.selectStyle}>
-                <InputLabel>Emission Source</InputLabel>
-                <Select
-                  value={carbonMetrics.sourceType}
-                  label="Emission Source"
-                  onChange={handleSelectChange}
-                  name="sourceType"
-                >
-                  <MenuItem value="direct">Direct Emissions</MenuItem>
-                  <MenuItem value="indirect">Indirect Emissions</MenuItem>
-                  <MenuItem value="valuechain">Value Chain Emissions</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                fullWidth
-                type="number"
-                name="scope1Emissions"
-                label="Scope 1 Emissions (tCO2e)"
-                value={carbonMetrics.scope1Emissions}
-                onChange={handleInputChange}
-                onWheel={(e) => e.target instanceof HTMLElement && e.target.blur()}
-                helperText="Direct emissions from owned sources"
-                sx={commonStyles.textFieldStyle}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                fullWidth
-                type="number"
-                name="scope2Emissions"
-                label="Scope 2 Emissions (tCO2e)"
-                value={carbonMetrics.scope2Emissions}
-                onChange={handleInputChange}
-                onWheel={(e) => e.target instanceof HTMLElement && e.target.blur()}
-                helperText="Indirect emissions from purchased energy"
-                sx={commonStyles.textFieldStyle}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                fullWidth
-                type="number"
-                name="scope3Emissions"
-                label="Scope 3 Emissions (tCO2e)"
-                value={carbonMetrics.scope3Emissions}
-                onChange={handleInputChange}
-                onWheel={(e) => e.target instanceof HTMLElement && e.target.blur()}
-                helperText="Other indirect emissions"
-                sx={commonStyles.textFieldStyle}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                type="number"
-                name="emissionIntensity"
-                label="Emission Intensity (tCO2e/unit)"
-                value={carbonMetrics.emissionIntensity}
-                onChange={handleInputChange}
-                onWheel={(e) => e.target instanceof HTMLElement && e.target.blur()}
-                helperText="Carbon emissions per unit of production"
-                sx={commonStyles.textFieldStyle}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                fullWidth
-                name="offsetProject"
-                label="Carbon Offset Project Name"
-                value={carbonMetrics.offsetProject}
-                onChange={handleInputChange}
-                helperText="Name of the carbon offset project"
-                sx={commonStyles.textFieldStyle}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                fullWidth
-                type="number"
-                name="offsetAmount"
-                label="Offset Amount (tCO2e)"
-                value={carbonMetrics.offsetAmount}
-                onChange={handleInputChange}
-                onWheel={(e) => e.target instanceof HTMLElement && e.target.blur()}
-                helperText="Amount of carbon emissions offset"
-                sx={commonStyles.textFieldStyle}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <FormControl fullWidth required sx={commonStyles.selectStyle}>
-                <InputLabel>Reduction Initiative</InputLabel>
-                <Select
-                  value={carbonMetrics.reductionInitiative}
-                  label="Reduction Initiative"
-                  onChange={handleSelectChange}
-                  name="reductionInitiative"
-                >
-                  <MenuItem value="renewable">
-                    Renewable Energy Adoption
-                  </MenuItem>
-                  <MenuItem value="efficiency">
-                    Energy Efficiency Improvements
-                  </MenuItem>
-                  <MenuItem value="transport">
-                    Sustainable Transportation
-                  </MenuItem>
-                  <MenuItem value="waste">Waste Reduction Programs</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                fullWidth
-                type="number"
-                name="initiativeImpact"
-                label="Initiative Impact (tCO2e)"
-                value={carbonMetrics.initiativeImpact}
-                onChange={handleInputChange}
-                onWheel={(e) => e.target instanceof HTMLElement && e.target.blur()}
-                helperText="Expected emissions reduction from initiative"
-                sx={commonStyles.textFieldStyle}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                fullWidth
-                name="verificationMethod"
-                label="Verification Method"
-                value={carbonMetrics.verificationMethod}
-                onChange={handleInputChange}
-                helperText="Method used to verify emission reductions"
-                sx={commonStyles.textFieldStyle}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                fullWidth
-                type="month"
-                name="projectTimeline"
-                label="Project Completion Timeline"
-                value={carbonMetrics.projectTimeline}
-                onChange={handleInputChange}
-                InputLabelProps={{ shrink: true }}
-                helperText="Expected completion date of reduction initiative"
-                sx={commonStyles.textFieldStyle}
-              />
-            </Grid>
-          </Grid>
+          </div>
         </div>
       </div>
       <MetricsActionButtons onReset={() => {
