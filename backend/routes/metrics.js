@@ -93,3 +93,26 @@ router.post('/waste', async (req, res) => {
 });
 
 module.exports = router;
+
+const EnergyMetrics = require('../models/energyMetrics');
+
+// GET Energy Metrics
+router.get('/energy', async (req, res) => {
+  try {
+    const energyData = await EnergyMetrics.find().sort({ year: 1, month: 1 });
+    res.json(energyData);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// POST new Energy Metric
+router.post('/energy', async (req, res) => {
+  try {
+    const newEntry = new EnergyMetrics(req.body);
+    const saved = await newEntry.save();
+    res.status(201).json(saved);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
