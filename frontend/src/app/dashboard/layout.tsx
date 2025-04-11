@@ -10,7 +10,7 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
+  const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
 
   return (
     <div className="dashboard-layout">

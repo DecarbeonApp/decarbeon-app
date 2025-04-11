@@ -1,0 +1,90 @@
+.container {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.title {
+  font-size: 1.25rem;
+  color: #1a1a1a;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #1a1a1a;
+  margin: 1.5rem 0 1rem;
+  font-weight: 500;
+}
+
+.form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.formGroup label {
+  font-size: 0.875rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.input {
+  padding: 0.75rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #1a1a1a;
+  background-color: #fff;
+  transition: border-color 0.2s ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #2D6A4F;
+  box-shadow: 0 0 0 2px rgba(45, 106, 79, 0.1);
+}
+
+.input:hover {
+  border-color: #2D6A4F;
+}
+
+.input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.input[type="number"]::-webkit-outer-spin-button,
+.input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.scopeTargets {
+  grid-column: 1 / -1;
+  background: #f8faf9;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.scopeTargets .formGroup {
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .form {
+    grid-template-columns: 1fr;
+  }
+  
+  .scopeTargets {
+    padding: 1rem;
+  }
+}

@@ -1,0 +1,55 @@
+.container {
+  background: white;
+  border-radius: 8px;
+  padding: 24px;
+  margin: 24px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  color: #2D6A4F;
+  margin: 0 0 24px 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 32px;
+}
+
+.section {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 6px;
+}
+
+.section h3 {
+  color: #2D6A4F;
+  margin: 0 0 16px 0;
+  font-size: 1.2rem;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.value {
+  font-weight: 700;
+  color: #2D6A4F;
+}
+
+.greenValue {
+  font-weight: 600;
+  color: #2D6A4F;
+}

@@ -50,13 +50,24 @@ const DashboardSidebar: FC<DashboardSidebarProps> = ({ isExpanded, onToggle }) =
         <div className={styles.navGroup}>
           <div className={styles.navLabel}>Quick Navigation</div>
           <NavItem
-            href="/dashboard"
-            label="Dashboard"
-            isActive={isActive('/dashboard')}
+            href="/dashboard/decarbeon-dashboard"
+            label="Decarbeon Dashboard"
+            isActive={isActive('/dashboard/decarbeon-dashboard')}
             isExpanded={isExpanded}
             icon={
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                 <path d="M3 13h18v8H3v-8zm0-10h18v8H3V3z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            }
+          />
+          <NavItem
+            href="/dashboard"
+            label="Overview"
+            isActive={isActive('/dashboard')}
+            isExpanded={isExpanded}
+            icon={
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm10 0h6v6h-6v-6z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             }
           />

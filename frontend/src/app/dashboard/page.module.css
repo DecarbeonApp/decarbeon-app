@@ -40,25 +40,68 @@
   padding: 1.5rem;
   border-radius: 8px;
   text-align: center;
+  position: relative;
+  border: 1px solid rgba(45, 106, 79, 0.1);
+  transition: all 0.2s ease;
+}
+
+.metricCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .metricCard h3 {
   color: #52796F;
   font-size: 1rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+  font-weight: 500;
 }
 
 .metricCard p {
   color: #2D6A4F;
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.2;
 }
 
 .filters {
   display: flex;
   gap: 1rem;
   margin: 1rem 0;
+}
+
+.metricChange {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  background: rgba(45, 106, 79, 0.1);
+  margin-top: 0.5rem;
+}
+
+.metricChange svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.2s ease;
+}
+
+.metricChange.up {
+  color: #DC2626;
+  background: rgba(220, 38, 38, 0.1);
+}
+
+.metricChange.down {
+  color: #2D6A4F;
+  background: rgba(45, 106, 79, 0.1);
+}
+
+.metricChange.up svg {
+  transform: rotate(180deg);
 }
 
 .select {

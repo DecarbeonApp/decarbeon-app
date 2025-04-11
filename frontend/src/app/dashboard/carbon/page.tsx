@@ -47,16 +47,34 @@ const renderMetricCards = (data: any[]) => {
   return (
     <div className={styles.metricCards}>
       <div className={styles.metricCard}>
-        <h3>Total Emissions</h3>
-        <p>{totalEmissions} tCO2e</p>
+        <h3 className={styles.metricTitle}>Total Emissions</h3>
+        <div className={styles.metricValue}>{totalEmissions} tCO2e</div>
+        <div className={`${styles.metricChange} ${styles.down}`}>
+          -12.5%
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M12 5v14M5 12l7 7 7-7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </div>
       </div>
       <div className={styles.metricCard}>
-        <h3>YoY Change</h3>
-        <p className={styles.decrease}>-12.5%</p>
+        <h3 className={styles.metricTitle}>Emission Intensity</h3>
+        <div className={styles.metricValue}>0.55 tCO2e/unit</div>
+        <div className={`${styles.metricChange} ${styles.down}`}>
+          -8.3%
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M12 5v14M5 12l7 7 7-7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </div>
       </div>
       <div className={styles.metricCard}>
-        <h3>Target Progress</h3>
-        <p>68%</p>
+        <h3 className={styles.metricTitle}>Target Progress</h3>
+        <div className={styles.metricValue}>68%</div>
+        <div className={`${styles.metricChange} ${styles.up}`}>
+          +15%
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M12 19V5M5 12l7-7 7 7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </div>
         <div className={styles.progressBar}>
           <div className={styles.progress} style={{ width: '68%' }} />
         </div>

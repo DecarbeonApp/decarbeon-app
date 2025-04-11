@@ -1,0 +1,75 @@
+.container {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.title {
+  font-size: 1.25rem;
+  color: #1a1a1a;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #1a1a1a;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.chartGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.chartContainer {
+  min-height: 300px;
+  padding: 1rem;
+  background: #f8faf9;
+  border-radius: 8px;
+}
+
+.summaryStats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: #f8faf9;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.statLabel {
+  font-size: 0.875rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.statValue {
+  font-size: 1.25rem;
+  color: #2D6A4F;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .chartGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .summaryStats {
+    grid-template-columns: 1fr;
+  }
+}
