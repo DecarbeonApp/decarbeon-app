@@ -77,20 +77,44 @@ const renderMetricCards = (data: any[]) => {
   return (
     <div className={styles.metricCards}>
       <div className={styles.metricCard}>
-        <h3>Total Energy Usage</h3>
-        <p>{totalEnergy} MWh</p>
+        <h3 className={styles.metricTitle}>Total Energy Usage</h3>
+        <div className={styles.metricValue}>{totalEnergy} MWh</div>
+        <div className={`${styles.metricChange} ${styles.down}`}>
+          -8.5%
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M12 5v14M5 12l7 7 7-7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </div>
       </div>
       <div className={styles.metricCard}>
-        <h3>Efficiency Rating</h3>
-        <p>A+</p>
+        <h3 className={styles.metricTitle}>Efficiency Rating</h3>
+        <div className={styles.metricValue}>A+</div>
+        <div className={`${styles.metricChange} ${styles.up}`}>
+          +12%
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M12 19V5M5 12l7-7 7 7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </div>
       </div>
       <div className={styles.metricCard}>
-        <h3>Cost Savings</h3>
-        <p className={styles.decrease}>$12,500</p>
+        <h3 className={styles.metricTitle}>Cost Savings</h3>
+        <div className={styles.metricValue}>$12,500</div>
+        <div className={`${styles.metricChange} ${styles.up}`}>
+          +15%
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M12 19V5M5 12l7-7 7 7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </div>
       </div>
       <div className={styles.metricCard}>
-        <h3>Renewable Share</h3>
-        <p>35%</p>
+        <h3 className={styles.metricTitle}>Renewable Share</h3>
+        <div className={styles.metricValue}>35%</div>
+        <div className={`${styles.metricChange} ${styles.up}`}>
+          +10%
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M12 19V5M5 12l7-7 7 7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </div>
         <div className={styles.progressBar}>
           <div className={styles.progress} style={{ width: '35%' }} />
         </div>

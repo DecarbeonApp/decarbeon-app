@@ -110,22 +110,52 @@ export default function DashboardPage() {
           <div className={styles.metricCard}>
             <h3>Total Energy Usage</h3>
             <p>{data.monthlyData?.reduce((sum, month) => sum + (month?.intensity || 0), 0).toFixed(2)} kWh</p>
+            <div className={`${styles.metricChange} ${styles.down}`}>
+              -8.5%
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M12 5v14M5 12l7 7 7-7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
           </div>
           <div className={styles.metricCard}>
             <h3>Renewable Energy</h3>
             <p>35%</p>
+            <div className={`${styles.metricChange} ${styles.up}`}>
+              +12%
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M12 19V5M5 12l7-7 7 7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
           </div>
           <div className={styles.metricCard}>
             <h3>Energy Efficiency</h3>
             <p>78/100</p>
+            <div className={`${styles.metricChange} ${styles.up}`}>
+              +5%
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M12 19V5M5 12l7-7 7 7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
           </div>
           <div className={styles.metricCard}>
             <h3>Peak Demand</h3>
             <p>{Math.max(...(data.monthlyData?.map(month => month?.intensity || 0) || [0])).toFixed(2)} kW</p>
+            <div className={`${styles.metricChange} ${styles.down}`}>
+              -10%
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M12 5v14M5 12l7 7 7-7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
           </div>
           <div className={styles.metricCard}>
             <h3>Energy Cost</h3>
             <p>${(data.monthlyData?.reduce((sum, month) => sum + (month?.intensity || 0) * 0.12, 0) || 0).toFixed(2)}</p>
+            <div className={`${styles.metricChange} ${styles.down}`}>
+              -15%
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M12 5v14M5 12l7 7 7-7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
           </div>
         </div>
 
@@ -222,14 +252,32 @@ export default function DashboardPage() {
           <div className={styles.metricCard}>
             <h3>Total Emissions</h3>
             <p>{data.monthlyData.reduce((sum, month) => sum + month.emissions, 0).toFixed(2)} tCO2e</p>
+            <div className={`${styles.metricChange} ${styles.down}`}>
+              -12.5%
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M12 5v14M5 12l7 7 7-7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
           </div>
           <div className={styles.metricCard}>
             <h3>Emission Reduction</h3>
             <p>{data.monthlyData.reduce((sum, month) => sum + month.reduction, 0).toFixed(2)} tCO2e</p>
+            <div className={`${styles.metricChange} ${styles.up}`}>
+              +15%
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M12 19V5M5 12l7-7 7 7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
           </div>
           <div className={styles.metricCard}>
             <h3>Carbon Score</h3>
             <p>82/100</p>
+            <div className={`${styles.metricChange} ${styles.up}`}>
+              +8%
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M12 19V5M5 12l7-7 7 7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
           </div>
         </div>
 

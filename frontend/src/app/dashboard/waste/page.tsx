@@ -77,22 +77,43 @@ const renderMetricCards = (data: any[]) => {
   return (
     <div className={styles.metricCards}>
       <div className={styles.metricCard}>
-        <h3>Total Waste Generated</h3>
-        <p>{totalWaste} tons</p>
+        <h3 className={styles.metricTitle}>Total Waste Generated</h3>
+        <div className={styles.metricValue}>{totalWaste} tons</div>
+        <div className={`${styles.metricChange} ${styles.down}`}>
+          -10%
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M12 5v14M5 12l7 7 7-7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </div>
       </div>
       <div className={styles.metricCard}>
-        <h3>Recycling Rate</h3>
-        <p>{recyclingRate}%</p>
+        <h3 className={styles.metricTitle}>Recycling Rate</h3>
+        <div className={styles.metricValue}>{recyclingRate}%</div>
+        <div className={`${styles.metricChange} ${styles.up}`}>
+          +8%
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M12 19V5M5 12l7-7 7 7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </div>
       </div>
       <div className={styles.metricCard}>
-        <h3>Waste Reduction</h3>
-        <p className={styles.decrease}>-15%</p>
+        <h3 className={styles.metricTitle}>Waste Reduction</h3>
+        <div className={styles.metricValue}>15%</div>
+        <div className={`${styles.metricChange} ${styles.up}`}>
+          +5%
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M12 19V5M5 12l7-7 7 7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </div>
       </div>
       <div className={styles.metricCard}>
-        <h3>Diversion Rate</h3>
-        <p>75%</p>
-        <div className={styles.progressBar}>
-          <div className={styles.progress} style={{ width: '75%' }} />
+        <h3 className={styles.metricTitle}>Diversion Rate</h3>
+        <div className={styles.metricValue}>75%</div>
+        <div className={`${styles.metricChange} ${styles.up}`}>
+          +7%
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M12 19V5M5 12l7-7 7 7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
         </div>
       </div>
     </div>

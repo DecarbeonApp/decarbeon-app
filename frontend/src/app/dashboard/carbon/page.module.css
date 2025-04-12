@@ -83,17 +83,55 @@
   border: 1px solid #E6E8E6;
 }
 
-.metricCard h3 {
+.metricTitle {
   font-size: 14px;
   color: #6B7280;
   margin-bottom: 8px;
 }
 
-.metricCard p {
+.metricValue {
   font-size: 24px;
   font-weight: 600;
   color: #2D6A4F;
   margin: 0;
+  margin-bottom: 8px;
+}
+
+.metricChange {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.up {
+  color: #DC2626;
+}
+
+.down {
+  color: #2D6A4F;
+}
+
+.metricChange::before {
+  content: '';
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-right: 4px;
+}
+
+.up::before {
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid #DC2626;
+}
+
+.down::before {
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #2D6A4F;
 }
 
 .decrease {
