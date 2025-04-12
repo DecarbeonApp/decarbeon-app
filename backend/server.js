@@ -10,14 +10,13 @@ app.use(cors());
 app.use(express.json());
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/decarbeon', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}).then(() => {
-  console.log('Connected to MongoDB');
-}).catch((error) => {
-  console.error('Error connecting to MongoDB:', error);
-});
+mongoose.connect('mongodb://localhost:27017/decarbeon')
+  .then(() => {
+    console.log('Connected to MongoDB');
+  })
+  .catch((error) => {
+    console.error('Error connecting to MongoDB:', error);
+  });
 
 // Use metrics routes
 app.use('/api/metrics', metricsRoutes);
@@ -32,7 +31,8 @@ const clients = new Set();
 let wsData = {
   carbonMetrics: {},
   waterMetrics: {},
-  wasteMetrics: {}
+  wasteMetrics: {},
+  energyMetrics: {}
 };
 
 // Function to broadcast data to all connected clients
@@ -146,8 +146,9 @@ app.post('/api/emissions/update', async (req, res) => {
       ...wsData,
       carbonMetrics: updates.carbonMetrics || wsData.carbonMetrics,
       waterMetrics: updates.waterMetrics || wsData.waterMetrics,
-      wasteMetrics: updates.wasteMetrics || wsData.wasteMetrics
-    };
+      wasteMetrics: updates.wasteMetrics || wsData.wasteMetrics,
+      energyMetrics: updates.energyMetrics || wsData.energyMetrics
+    };    
 
     // Broadcast updates to all connected clients
     broadcastData({

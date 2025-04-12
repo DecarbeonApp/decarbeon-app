@@ -110,8 +110,20 @@ router.get('/energy', async (req, res) => {
 router.post('/energy', async (req, res) => {
   try {
     const newEntry = new EnergyMetrics(req.body);
-    const saved = await newEntry.save();
-    res.status(201).json(saved);
+const saved = await newEntry.save();
+
+// WebSocket broadcast here
+const { broadcastData } = require('../ws'); // move function to its own file if needed
+
+broadcastData({
+  type: 'data_update',
+  data: {
+    energyMetrics: saved
+  }
+});
+
+res.status(201).json(saved);
+
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
